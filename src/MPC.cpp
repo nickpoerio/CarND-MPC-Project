@@ -6,8 +6,8 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 0;
-double dt = 0;
+size_t N = 20;
+double dt = 0.1;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -33,6 +33,8 @@ class FG_eval {
     // `fg` a vector of the cost constraints, `vars` is a vector of variable values (state & actuators)
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
+	
+	
   }
 };
 
@@ -52,9 +54,9 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // element vector and there are 10 timesteps. The number of variables is:
   //
   // 4 * 10 + 2 * 9
-  size_t n_vars = 0;
+  size_t n_vars = state.size()*N+2*(N-1);
   // TODO: Set the number of constraints
-  size_t n_constraints = 0;
+  size_t n_constraints = state.size();
 
   // Initial value of the independent variables.
   // SHOULD BE 0 besides initial state.
@@ -66,6 +68,10 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);
   // TODO: Set lower and upper limits for variables.
+  for (int i = 0; i < n_vars; i++) {
+    vars_lowerbound[i] = 0;
+    vars_lowerbound[i] = 0;
+  }
 
   // Lower and upper limits for the constraints
   // Should be 0 besides initial state.
@@ -117,5 +123,5 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   //
   // {...} is shorthand for creating a vector, so auto x1 = {1.0,2.0}
   // creates a 2 element double vector.
-  return {};
+  return {solution.x[delta_start],solution.x[a_start]};
 }

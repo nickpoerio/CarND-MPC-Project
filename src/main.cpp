@@ -100,6 +100,11 @@ int main() {
           */
           double steer_value;
           double throttle_value;
+		  /*
+		  vector<double> actuators=mpc.Solve(state,coeffs);
+		  steer_value=actuators[0];
+		  steer_value=actuators[1];
+		  */
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
