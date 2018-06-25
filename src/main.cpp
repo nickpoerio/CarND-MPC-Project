@@ -98,13 +98,50 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double steer_value;
-          double throttle_value;
-		  /*
-		  vector<double> actuators=mpc.Solve(state,coeffs);
-		  steer_value=actuators[0];
-		  steer_value=actuators[1];
-		  */
+	      double delta= j[1]["steering_angle"];
+		  double a = j[1]["throttle"];
+		  
+          // Express waypoints coordinates wrt the car local frame.
+          size_t n_pts = ptsx.size();
+          auto ptsx_loc = Eigen::VectorXd(n_pts);
+          auto ptsy_loc= Eigen::VectorXd(n_pts);
+		  
+          for (unsigned int i = 0; i < n_pts; i++ ) {
+            double dx = ptsx[i]-px;
+            double dy = ptsy[i]-py;
+            ptsx_loc(i) = dx*cos(psi)+dy*sin(psi);
+            ptsy_loc(i) = -dx*sin(psi)+dy*cos(psi);
+          }
+
+          // Fit polynomial to the points - 5th order.
+          auto coeffs = polyfit(ptsx_loc,ptsy_loc,5);
+
+          // Initial state (before delay)
+          const double x0 = 0.;
+          const double y0 = 0.;
+          const double psi0 = 0.;
+          double cte0 = coeffs[0];
+          double epsi0 = -atan(coeffs[1]);
+		  
+          // Actuator delay in seconds.
+          const double dt = 0.1;
+
+          // State after delay.
+          double x0_del = x0+(v*cos(psi0)*dt);
+          double y0_del = y0+(v*sin(psi0)*dt);
+          double psi0_del = psi0-(v*delta/mpc.Lf*dt);
+          double psi0_del = v+a*dt;
+          double cte0_del = cte0+(v*sin(epsi0)*dt);
+          double epsi0_del = epsi0-(v*atan(coeffs[1])/mpc.Lf*dt);
+
+          // Delayed state vector.
+          Eigen::VectorXd state(6);
+          state << x0_del,y0_del,psi0_del,psi0_del,cte0_del,epsi0_del;
+
+          // MPC solution.
+          auto vars = mpc.Solve(state,coeffs);
+          double steer_value = vars[0]/deg2rad(25);
+          double throttle_value = vars[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.

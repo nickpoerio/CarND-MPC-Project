@@ -56,7 +56,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // 4 * 10 + 2 * 9
   size_t n_vars = state.size()*N+2*(N-1);
   // TODO: Set the number of constraints
-  size_t n_constraints = state.size();
+  size_t n_constraints = state.size()*N;
 
   // Initial value of the independent variables.
   // SHOULD BE 0 besides initial state.
