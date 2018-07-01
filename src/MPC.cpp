@@ -73,7 +73,7 @@ class FG_eval {
 	fg[1 + cte_start] = vars[cte_start];
 	fg[1 + epsi_start] = vars[epsi_start];
 	
-	for (int t = 1; t < N; t++) {
+	for (unsigned int t = 1; t < N; t++) {
 		// The state at time t+1 .
 		AD<double> x1 = vars[x_start + t];
 		AD<double> y1 = vars[y_start + t];
@@ -191,7 +191,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // Should be 0 besides initial state.
   Dvector constraints_lowerbound(n_constraints);
   Dvector constraints_upperbound(n_constraints);
-  for (int i = 0; i < n_constraints; i++) {
+  for (unsigned int i = 0; i < n_constraints; i++) {
     constraints_lowerbound[i] = 0;
     constraints_upperbound[i] = 0;
   }

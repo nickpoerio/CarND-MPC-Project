@@ -134,7 +134,7 @@ int main() {
           double psi0_del = psi0+(v*delta/Lf*dt);
           double v_del = v+a*dt;
           double cte0_del = cte0+(v*sin(epsi0)*dt);
-          double epsi0_del = epsi0+(v*delta)/Lf*dt);
+          double epsi0_del = epsi0+(v*delta/Lf*dt);
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
