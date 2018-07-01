@@ -47,20 +47,20 @@ class FG_eval {
 	fg[0] = 0;
 
     // Cost function
-    for (int t = 0; t < N; t++) {
+    for (unsigned int t = 0; t < N; t++) {
       fg[0] += 1000.*CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
       fg[0] += 100.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
     // Minimize the use of actuators.
-    for (int t = 0; t < N - 1; t++) {
+    for (unsigned int t = 0; t < N - 1; t++) {
       fg[0] += CppAD::pow(vars[delta_start + t], 2);
       fg[0] += CppAD::pow(vars[a_start + t], 2);
     }
 
     // Minimize the value gap between sequential actuations.
-    for (int t = 0; t < N - 2; t++) {
+    for (unsigned int t = 0; t < N - 2; t++) {
       fg[0] += CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       fg[0] += CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
@@ -119,7 +119,7 @@ MPC::~MPC() {}
 
 vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   bool ok = true;
-  size_t i;
+  //size_t i;
   typedef CPPAD_TESTVECTOR(double) Dvector;
 
   // TODO: Set the number of model variables (includes both states and inputs).
@@ -141,7 +141,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // Initial value of the independent variables.
   // SHOULD BE 0 besides initial state.
   Dvector vars(n_vars);
-  for (int i = 0; i < n_vars; i++) {
+  for (unsigned int i = 0; i < n_vars; i++) {
     vars[i] = 0;
   }
   
@@ -182,7 +182,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
     vars_lowerbound[i] = -25*M_PI/180;
     vars_upperbound[i] = 25*M_PI/180;
   }
-  for (int i = a_start; i < n_vars; i++) {
+  for (unsigned int i = a_start; i < n_vars; i++) {
     vars_lowerbound[i] = -1.;
     vars_upperbound[i] = 1.;
   }
