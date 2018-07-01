@@ -26,7 +26,7 @@ const int y_start = N+x_start;
 const int psi_start = N+y_start;
 const int v_start = N+psi_start;
 const int cte_start = N+v_start;
-const int epsi_start = N+cte_start
+const int epsi_start = N+cte_start;
 const int delta_start = N+epsi_start;
 const int a_start = N+delta_start;
 
