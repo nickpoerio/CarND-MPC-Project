@@ -109,8 +109,8 @@ int main() {
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
             double dy = ptsy[i]-py;
-            ptsx_loc(i) = dx*cos(psi)+dy*sin(psi);
-            ptsy_loc(i) = -dx*sin(psi)+dy*cos(psi);
+            ptsx_loc(i) = dx*cos(psi)-dy*sin(psi);
+            ptsy_loc(i) = dx*sin(psi)+dy*cos(psi);
           }
 
           // Fit polynomial to the points - 5th order.
@@ -121,7 +121,7 @@ int main() {
           const double y0 = 0.;
           const double psi0 = 0.;
           double cte0 = coeffs[0];
-          double epsi0 = -atan(coeffs[1]);
+          double epsi0 = atan(coeffs[1]);
 		  
           // Actuator delay in seconds.
           const double dt = 0.1;
@@ -129,14 +129,14 @@ int main() {
           // State after delay.
           double x0_del = x0+(v*cos(psi0)*dt);
           double y0_del = y0+(v*sin(psi0)*dt);
-          double psi0_del = psi0-(v*delta/mpc.Lf*dt);
-          double psi0_del = v+a*dt;
+          double psi0_del = psi0+(v*delta/mpc.Lf*dt);
+          double v_del = v+a*dt;
           double cte0_del = cte0+(v*sin(epsi0)*dt);
-          double epsi0_del = epsi0-(v*atan(coeffs[1])/mpc.Lf*dt);
+          double epsi0_del = epsi0+(v*delta)/mpc.Lf*dt);
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
-          state << x0_del,y0_del,psi0_del,psi0_del,cte0_del,epsi0_del;
+          state << x0_del,y0_del,psi0_del,v_del,cte0_del,epsi0_del;
 
           // MPC solution.
           auto vars = mpc.Solve(state,coeffs);
