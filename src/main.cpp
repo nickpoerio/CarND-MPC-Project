@@ -98,14 +98,14 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-	      double delta= j[1]["steering_angle"];
-		  double a = j[1]["throttle"];
-		  
+          double delta= j[1]["steering_angle"];
+          double a = j[1]["throttle"];
+          
           // Express waypoints coordinates wrt the car local frame.
           size_t n_pts = ptsx.size();
           auto ptsx_loc = Eigen::VectorXd(n_pts);
           auto ptsy_loc= Eigen::VectorXd(n_pts);
-		  
+          
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
             double dy = ptsy[i]-py;
@@ -122,11 +122,11 @@ int main() {
           const double psi0 = 0.;
           double cte0 = coeffs[0];
           double epsi0 = atan(coeffs[1]);
-		  
+
           // Actuator delay in seconds.
           const double dt = 0.1;
-		  
-		  const double Lf = 2.67;
+          
+          const double Lf = 2.67;
 
           // State after delay.
           double x0_del = x0+(v*cos(psi0)*dt);
