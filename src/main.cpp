@@ -98,15 +98,13 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          //double delta = j[1]["steering_angle"];
-          //double a = j[1]["throttle"];
-		  double delta = 0;
-		  double a = 0;
+          double delta = j[1]["steering_angle"];
+          double a = j[1]["throttle"];
           
           // Express waypoints coordinates wrt the car local frame.
           size_t n_pts = ptsx.size();
           auto ptsx_loc = Eigen::VectorXd(n_pts);
-          auto ptsy_loc= Eigen::VectorXd(n_pts);
+          auto ptsy_loc = Eigen::VectorXd(n_pts);
           
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
