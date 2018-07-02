@@ -98,8 +98,10 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double delta= j[1]["steering_angle"];
-          double a = j[1]["throttle"];
+          //double delta = j[1]["steering_angle"];
+          //double a = j[1]["throttle"];
+		  double delta = 0;
+		  double a = 0;
           
           // Express waypoints coordinates wrt the car local frame.
           size_t n_pts = ptsx.size();
