@@ -122,8 +122,8 @@ int main() {
           const double Lf = 2.67;
 
           // State after delay.
-          double x0_del = x+(v*cos(psi)*dt);
-          double y0_del = y+(v*sin(psi)*dt);
+          double x0_del = px+(v*cos(psi)*dt);
+          double y0_del = py+(v*sin(psi)*dt);
           double psi0_del = psi+(v*delta/Lf*dt);
           double v0_del = v+a*dt;
           double cte0_del = coeffs[0]+(v*sin(atan(coeffs[1]))*dt);
