@@ -116,29 +116,22 @@ int main() {
           // Fit polynomial to the points - 5th order.
           auto coeffs = polyfit(ptsx_loc,ptsy_loc,5);
 
-          // Initial state (before delay)
-          const double x0 = 0.;
-          const double y0 = 0.;
-          const double psi0 = 0.;
-          double cte0 = coeffs[0];
-          double epsi0 = atan(coeffs[1]);
-
           // Actuator delay in seconds.
           const double dt = 0.1;
           
           const double Lf = 2.67;
 
           // State after delay.
-          double x0_del = x0+(v*cos(psi0)*dt);
-          double y0_del = y0+(v*sin(psi0)*dt);
-          double psi0_del = psi0+(v*delta/Lf*dt);
-          double v_del = v+a*dt;
-          double cte0_del = cte0+(v*sin(epsi0)*dt);
-          double epsi0_del = epsi0+(v*delta/Lf*dt);
+          double x0_del = x+(v*cos(psi)*dt);
+          double y0_del = y+(v*sin(psi)*dt);
+          double psi0_del = psi+(v*delta/Lf*dt);
+          double v0_del = v+a*dt;
+          double cte0_del = coeffs[0]+(v*sin(atan(coeffs[1]))*dt);
+          double epsi0_del = atan(coeffs[1])+(v*delta/Lf*dt);
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
-          state << x0_del,y0_del,psi0_del,v_del,cte0_del,epsi0_del;
+          state << x0_del,y0_del,psi0_del,v0_del,cte0_del,epsi0_del;
 
           // MPC solution.
           auto vars = mpc.Solve(state,coeffs);
