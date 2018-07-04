@@ -139,7 +139,7 @@ int main() {
           double psi0_del = psi0-psip*dt;
           double v0_del = v0+a*dt;
           double cte0_del = cte0+(v0*sin(epsi0)*dt);
-          double epsi0_del = epsi0-psip*dt);
+          double epsi0_del = epsi0-psip*dt;
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
