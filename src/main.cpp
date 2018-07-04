@@ -110,8 +110,9 @@ int main() {
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
             double dy = ptsy[i]-py;
-            ptsx_loc(i) = dx*cos(psi)-dy*sin(psi);
-            ptsy_loc(i) = dx*sin(psi)+dy*cos(psi);
+			double mpsi = -psi;
+            ptsx_loc(i) = dx*cos(mpsi)-dy*sin(mpsi);
+            ptsy_loc(i) = dx*sin(mpsi)+dy*cos(mpsi);
           }
 
           // Fit polynomial to the points - 5th order.
@@ -121,14 +122,24 @@ int main() {
           const double dt = 0.1;
           
           const double Lf = 2.67;
-
+          
+		  // Initial State.
+		  double x0 = 0.;
+          double y0 = 0.;
+          double psi0 = 0.;
+          double v0 = v;
+          double cte0 = coeffs[0];
+          double epsi0 = -atan(coeffs[1]);
+		  
+		  double psip = v0*delta/Lf;
+		  
           // State after delay.
-          double x0_del = px+(v*cos(psi)*dt);
-          double y0_del = py+(v*sin(psi)*dt);
-          double psi0_del = psi+(v*delta/Lf*dt);
-          double v0_del = v+a*dt;
-          double cte0_del = coeffs[0]+(v*sin(atan(coeffs[1]))*dt);
-          double epsi0_del = atan(coeffs[1])+(v*delta/Lf*dt);
+          double x0_del = x0+v*dt;
+          double y0_del = y0;
+          double psi0_del = psi0-psip*dt;
+          double v0_del = v0+a*dt;
+          double cte0_del = cte0+(v0*sin(epsi0)*dt);
+          double epsi0_del = epsi0-psip*dt);
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
