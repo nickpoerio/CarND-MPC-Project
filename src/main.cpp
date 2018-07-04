@@ -131,7 +131,7 @@ int main() {
           double cte0 = y0-coeffs[0];
           double epsi0 = psi0-atan(coeffs[1]);
 		  
-		  double psip = v0*-delta/Lf;
+		  double psip = v0*-delta*rad2deg(25)/Lf;
 		  
           // State after delay.
           double x0_del = x0+v*dt;
