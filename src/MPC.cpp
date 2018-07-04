@@ -94,7 +94,7 @@ class FG_eval {
 		AD<double> delta0 = vars[delta_start + t - 1];
 		AD<double> a0 = vars[a_start + t - 1];
 		
-		AD<double> f0 = coeffs[0]+coeffs[1]*x0+coeffs[2]*CppAD::pow(x0,2)+coeffs[3]*CppAD::pow(x0,3)+coeffs[4]*CppAD::pow(x0,4)+coeffs[5]*CppAD::pow(x0,5);
+		AD<double> f0 = coeffs[0]+coeffs[1]*x0+coeffs[2]*CppAD::pow(x0,2)+coeffs[3]*CppAD::pow(x0,3);
 		AD<double> psides0 = CppAD::atan(coeffs[1]);
 		
 		// remaining constraints

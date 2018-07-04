@@ -115,7 +115,7 @@ int main() {
           }
 
           // Fit polynomial to the points - 5th order.
-          auto coeffs = polyfit(ptsx_loc,ptsy_loc,5);
+          auto coeffs = polyfit(ptsx_loc,ptsy_loc,3);
 
           // Actuator delay in seconds.
           const double dt = 0.1;
