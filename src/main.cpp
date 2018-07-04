@@ -99,7 +99,7 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double delta = j[1]["steering_angle"];
+          double delta = -j[1]["steering_angle"];
           double a = j[1]["throttle"];
           
           // Express waypoints coordinates wrt the car local frame.
@@ -128,18 +128,18 @@ int main() {
           double y0 = 0.;
           double psi0 = 0.;
           double v0 = v;
-          double cte0 = coeffs[0];
-          double epsi0 = -atan(coeffs[1]);
+          double cte0 = y0-coeffs[0];
+          double epsi0 = psi0-atan(coeffs[1]);
 		  
 		  double psip = v0*delta/Lf;
 		  
           // State after delay.
           double x0_del = x0+v*dt;
           double y0_del = y0;
-          double psi0_del = psi0-psip*dt;
+          double psi0_del = psi0+psip*dt;
           double v0_del = v0+a*dt;
           double cte0_del = cte0+(v0*sin(epsi0)*dt);
-          double epsi0_del = epsi0-psip*dt;
+          double epsi0_del = epsi0+psip*dt;
 
           // Delayed state vector.
           Eigen::VectorXd state(6);
@@ -147,7 +147,7 @@ int main() {
 
           // MPC solution.
           auto vars = mpc.Solve(state,coeffs);
-          double steer_value = vars[0]/deg2rad(25);
+          double steer_value = -vars[0]/deg2rad(25);
           double throttle_value = vars[1];
 
           json msgJson;
