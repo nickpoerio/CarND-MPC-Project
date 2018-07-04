@@ -28,7 +28,7 @@ const int v_start = N+psi_start;
 const int cte_start = N+v_start;
 const int epsi_start = N+cte_start;
 const int delta_start = N+epsi_start;
-const int a_start = N+delta_start;
+const int a_start = N-1+delta_start;
 
 const double ref_v = 60.;
 
