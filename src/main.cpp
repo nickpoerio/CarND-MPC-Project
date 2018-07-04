@@ -99,7 +99,7 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double delta = -j[1]["steering_angle"];
+          double delta = j[1]["steering_angle"];
           double a = j[1]["throttle"];
           
           // Express waypoints coordinates wrt the car local frame.
@@ -131,7 +131,7 @@ int main() {
           double cte0 = y0-coeffs[0];
           double epsi0 = psi0-atan(coeffs[1]);
 		  
-		  double psip = v0*delta/Lf;
+		  double psip = v0*-delta/Lf;
 		  
           // State after delay.
           double x0_del = x0+v*dt;
