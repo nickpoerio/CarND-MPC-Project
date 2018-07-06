@@ -110,7 +110,7 @@ int main() {
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
             double dy = ptsy[i]-py;
-			double mpsi = psi;
+			double mpsi = -psi;
             ptsx_loc(i) = dx*cos(mpsi)-dy*sin(mpsi);
             ptsy_loc(i) = dx*sin(mpsi)+dy*cos(mpsi);
           }
@@ -128,7 +128,7 @@ int main() {
           double y0 = 0.;
           double psi0 = 0.;
           double v0 = v;
-          double cte0 = y0-coeffs[0];
+          double cte0 = y0+coeffs[0];
           double epsi0 = psi0-atan(coeffs[1]);
 		  
 		  double psip = v0*-delta*deg2rad(25)/Lf;
