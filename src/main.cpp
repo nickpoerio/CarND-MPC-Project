@@ -176,7 +176,7 @@ int main() {
           msgJson["mpc_y"] = mpc_y_vals;
 
           //Display the waypoints/reference line
-          vector<double> ;
+          vector<double> next_x_vals;
           vector<double> next_y_vals;
 		  
 		  for (unsigned int i=0;i<100;i+=2){
