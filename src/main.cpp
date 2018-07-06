@@ -162,10 +162,11 @@ int main() {
 
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Green line
-		  for (unsigned int i=0;i<ptsx_loc.size();i++){
+		  /*for (unsigned int i=0;i<ptsx_loc.size();i++){
 			  mpc_x_vals[i]=ptsx_loc[i];
 			  mpc_y_vals[i]=ptsy_loc[i];
 		  }
+		  */
 
           msgJson["mpc_x"] = mpc_x_vals;
           msgJson["mpc_y"] = mpc_y_vals;
