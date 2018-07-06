@@ -110,7 +110,7 @@ int main() {
           for (unsigned int i = 0; i < n_pts; i++ ) {
             double dx = ptsx[i]-px;
             double dy = ptsy[i]-py;
-			double mpsi = -psi;
+			double mpsi = psi;
             ptsx_loc(i) = dx*cos(mpsi)-dy*sin(mpsi);
             ptsy_loc(i) = dx*sin(mpsi)+dy*cos(mpsi);
           }
@@ -162,6 +162,10 @@ int main() {
 
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Green line
+		  for (unsigned int i=0;i<ptsx_loc.size();i++){
+			  mpc_x_vals[i]=ptsx_loc[i];
+			  mpc_y_vals[i]=ptsy_loc[i];
+		  }
 
           msgJson["mpc_x"] = mpc_x_vals;
           msgJson["mpc_y"] = mpc_y_vals;
