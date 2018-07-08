@@ -30,7 +30,6 @@ const int epsi_start = N+cte_start;
 const int delta_start = N+epsi_start;
 const int a_start = N-1+delta_start;
 
-const double ref_v = CppAD::sqrt(9./(CppAD::abs(coeffs[2])+1e-5));
 
 class FG_eval {
  public:
@@ -44,6 +43,8 @@ class FG_eval {
     // `fg` a vector of the cost constraints, `vars` is a vector of variable values (state & actuators)
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
+	double ref_v = CppAD::sqrt(9./(CppAD::abs(coeffs[2])+1e-5));
+
 	fg[0] = 0;
 
     // Cost function
