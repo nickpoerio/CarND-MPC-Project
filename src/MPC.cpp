@@ -30,7 +30,7 @@ const int epsi_start = N+cte_start;
 const int delta_start = N+epsi_start;
 const int a_start = N-1+delta_start;
 
-const double ref_v = 80.;
+const double ref_v = 60.;
 
 class FG_eval {
  public:
@@ -55,11 +55,11 @@ class FG_eval {
 
     // Minimize the use of actuators.
     for (unsigned int t = 0; t < N - 1; t++) {
-      fg[0] += 100.*CppAD::pow(vars[delta_start + t], 2);
+      fg[0] += 10.*CppAD::pow(vars[delta_start + t], 2);
       fg[0] += 1.*CppAD::pow(vars[a_start + t], 2);
 	  
 	  //to go slower in turns
-	  fg[0] += 1000.*CppAD::pow(vars[v_start + t]*vars[delta_start + t], 2);
+	  fg[0] += 1.*CppAD::pow(vars[v_start + t]*coeffs[2], 2);
     }
 
     // Minimize the value gap between sequential actuations.
