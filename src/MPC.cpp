@@ -43,7 +43,7 @@ class FG_eval {
     // `fg` a vector of the cost constraints, `vars` is a vector of variable values (state & actuators)
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
-	double ref_v = CppAD::sqrt(15./(CppAD::abs(coeffs[2])+1e-5));
+	double ref_v = CppAD::sqrt(25./(CppAD::abs(coeffs[2])+1e-5));
 
 	fg[0] = 0;
 
