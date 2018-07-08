@@ -59,7 +59,7 @@ class FG_eval {
       fg[0] += 1.*CppAD::pow(vars[a_start + t], 2);
 	  
 	  //to go slower in turns
-	  fg[0] += 10.*CppAD::pow((vars[v_start + t]>60)*vars[v_start + t]*coeffs[2],2);
+	  fg[0] += 1000.*CppAD::pow((vars[v_start + t]>60)*vars[v_start + t]*coeffs[2],2);
     }
 
     // Minimize the value gap between sequential actuations.
