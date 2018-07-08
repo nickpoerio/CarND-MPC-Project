@@ -43,7 +43,7 @@ class FG_eval {
     // `fg` a vector of the cost constraints, `vars` is a vector of variable values (state & actuators)
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
-	double ref_v = CppAD::sqrt(25./(CppAD::abs(coeffs[2])+1e-5));
+	double ref_v = CppAD::sqrt(30./(CppAD::abs(coeffs[2])+1e-5));
 
 	fg[0] = 0;
 
@@ -57,7 +57,7 @@ class FG_eval {
     // Minimize the use of actuators.
     for (unsigned int t = 0; t < N - 1; t++) {
       fg[0] += 10.*CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += 1.*CppAD::pow(vars[a_start + t], 2);
+      fg[0] += 10.*CppAD::pow(vars[a_start + t], 2);
 	  
     }
 
