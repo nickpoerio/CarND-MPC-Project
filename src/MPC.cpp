@@ -55,7 +55,7 @@ class FG_eval {
 	  AD<double> yp = coeffs[1]+2*coeffs[2]*xx+3*coeffs[3]*CppAD::pow(xx,2);
 	  AD<double> ypp = 2*coeffs[2]+6*coeffs[3]*xx;
 	  
-	  AD<double> aymax = 27//*CppAD::sqrt(1-CppAD::pow(vars[a_start + t]/1.1,2));
+	  double aymax = 27;//*CppAD::sqrt(1-CppAD::pow(vars[a_start + t]/1.1,2));
 	  AD<double> curv = CppAD::abs(ypp)/CppAD::pow(1+CppAD::pow(yp,2),1.5);
 	  
 	  AD<double> ref_v = CppAD::sqrt(aymax/(curv+1e-5));
