@@ -52,7 +52,7 @@ class FG_eval {
       fg[0] += 10.*CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
 	  
-	  AD<double> x = x + vars[v_start + t]*cos(vars[psi_start + t)*0.1;
+	  AD<double> x = x + vars[v_start + t]*cos(vars[psi_start + t])*0.1;
 	  AD<double> yp = coeffs[1]+2*coeffs[2]*x+3*coeffs[3]*pow(x,2);
 	  AD<double> ypp = 2*coeffs[2]+6*coeffs[3]*x;
 	  
