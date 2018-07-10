@@ -2,6 +2,7 @@
 #include <cppad/cppad.hpp>
 #include <cppad/ipopt/solve.hpp>
 #include "Eigen-3.3/Eigen/Core"
+#include <math.h>
 
 using CppAD::AD;
 
@@ -52,12 +53,12 @@ class FG_eval {
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
 	  
 	  double x = CppAD::Value(vars[x_start + t]);
-	  double yp = coeffs[1]+2*coeffs[2]*x+3*coeffs[3]*CppAD::pow(x,2);
+	  double yp = coeffs[1]+2*coeffs[2]*x+3*coeffs[3]*pow(x,2);
 	  double ypp = 2*coeffs[2]+6*coeffs[3]*x;
 	  
-	  double curv = CppAD::abs(ypp)/CppAD::pow(1+CppAD::pow(yp,2),1.5);
+	  double curv = abs(ypp)/pow(1+pow(yp,2),1.5);
 	  
-	  double ref_v = CppAD::sqrt(55/(curv+1e-5));
+	  double ref_v = sqrt(55/(curv+1e-5));
       fg[0] += 1.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
