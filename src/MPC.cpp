@@ -56,20 +56,20 @@ class FG_eval {
 	  
 	  double curv = CppAD::abs(ypp)/CppAD::pow(1+CppAD::pow(yp,2),1.5);
 	  
-	  double ref_v = CppAD::sqrt(12/(curv+1e-5));
+	  double ref_v = CppAD::sqrt(55/(curv+1e-5));
       fg[0] += 1.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
     // Minimize the use of actuators.
     for (unsigned int t = 0; t < N - 1; t++) {
       fg[0] += 10.*CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += 1.*CppAD::pow(vars[a_start + t], 2);
+      fg[0] += 10.*CppAD::pow(vars[a_start + t], 2);
     }
 
     // Minimize the value gap between sequential actuations.
     for (unsigned int t = 0; t < N - 2; t++) {
-      fg[0] += 1.*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
-      fg[0] += 1e5*CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
+      fg[0] += 1000.*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += 1000*CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
 	
 	// initial constraints
