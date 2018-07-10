@@ -52,10 +52,10 @@ class FG_eval {
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
 	  
 	  AD<double> xx = vars[x_start + t];
-	  double yp = coeffs[1]+2*coeffs[2]*xx+3*coeffs[3]*CppAD::pow(xx,2);
-	  double ypp = 2*coeffs[2]+6*coeffs[3]*xx;
+	  AD<double> yp = coeffs[1]+2*coeffs[2]*xx+3*coeffs[3]*CppAD::pow(xx,2);
+	  AD<double> ypp = 2*coeffs[2]+6*coeffs[3]*xx;
 	  
-	  double aymax = 27*CppAD::sqrt(1-CppAD::pow(vars[a_start + t]/1.1,2));
+	  AD<double> aymax = 27*CppAD::sqrt(1-CppAD::pow(vars[a_start + t]/1.1,2));
 	  double curv = CppAD::abs(ypp)/CppAD::pow(1+CppAD::pow(yp,2),1.5);
 	  
 	  double ref_v = CppAD::sqrt(aymax/(curv+1e-5));
