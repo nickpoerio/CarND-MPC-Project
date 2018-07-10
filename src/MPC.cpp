@@ -6,7 +6,7 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 20;
+size_t N = 10;
 double dt = 0.1;
 
 // This value assumes the model presented in the classroom is used.
@@ -51,15 +51,21 @@ class FG_eval {
       fg[0] += 10.*CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
 	  
-	  double ref_v = CppAD::sqrt(27./(CppAD::abs(coeffs[2]+coeffs[3]*t)+1e-5));
+	  double xx = vars[x_start + t];
+	  double yp = coeffs[1]+2*coeffs[2]*xx+3*coeffs[3]*CppAD::pow(xx,2);
+	  double ypp = 2*coeffs[2]+6*coeffs[3]*xx;
+	  
+	  double aymax = 27*CppAD::sqrt(1-CppAD::pow(vars[a_start + t]/1.1,2));
+	  double curv = CppAD::abs(ypp)/CppAD::pow(1+CppAD::pow(yp,2),1.5);
+	  
+	  double ref_v = CppAD::sqrt(aymax/(curv+1e-5));
       fg[0] += 1.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
     // Minimize the use of actuators.
     for (unsigned int t = 0; t < N - 1; t++) {
       fg[0] += 10.*CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += 10.*CppAD::pow(vars[a_start + t], 2);
-	  
+      fg[0] += 1.*CppAD::pow(vars[a_start + t], 2);
     }
 
     // Minimize the value gap between sequential actuations.
