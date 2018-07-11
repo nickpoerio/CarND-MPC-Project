@@ -2,7 +2,6 @@
 #include <cppad/cppad.hpp>
 #include <cppad/ipopt/solve.hpp>
 #include "Eigen-3.3/Eigen/Core"
-#include <math.h>
 
 using CppAD::AD;
 
@@ -52,7 +51,7 @@ class FG_eval {
       fg[0] += 10.*CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 1000.*CppAD::pow(vars[epsi_start + t], 2);
 	  
-	  AD<double> x = x + vars[v_start + t]*CppAD::cos(vars[psi_start + t])*dt;
+	  AD<double> x = x + vars[v_start + t]*dt;
 	  AD<double> yp = coeffs[1]+2*coeffs[2]*x+3*coeffs[3]*CppAD::pow(x,2);
 	  AD<double> ypp = 2*coeffs[2]+6*coeffs[3]*x;
 	  
