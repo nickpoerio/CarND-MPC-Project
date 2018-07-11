@@ -59,7 +59,7 @@ class FG_eval {
 	  
 	  AD<double> curv = abs(ypp)/pow(1+pow(yp,2),1.5);
 	  
-	  AD<double> ref_v = sqrt(160/(curv+7e-3)); //aumentare ancora
+	  AD<double> ref_v = sqrt(150/(curv+7e-3)); //aumentare ancora
       fg[0] += 1.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
