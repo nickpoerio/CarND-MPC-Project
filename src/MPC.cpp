@@ -48,6 +48,7 @@ class FG_eval {
 	fg[0] = 0;
 	AD<double> x = 0;
 	AD<double> yp = 0;
+	AD<double> vmax = 110;
     // Cost function
     for (unsigned int t = 0; t < N; t++) {
       fg[0] += 10.*CppAD::pow(vars[cte_start + t], 2);
@@ -59,7 +60,7 @@ class FG_eval {
 	  
 	  AD<double> curv = abs(ypp)/pow(1+pow(yp,2),1.5);
 	  
-	  AD<double> ref_v = fmin(110.,sqrt(200/(curv+1e-5))); //aumentare ancora
+	  AD<double> ref_v = fmin(vmax,sqrt(200/(curv+1e-5))); //aumentare ancora
       fg[0] += 1.*CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
 
