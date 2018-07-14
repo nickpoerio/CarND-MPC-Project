@@ -17,14 +17,14 @@ approach, which still makes the job, that I will explain with the cost function 
 I used the following costs to build the cost function: cross track, heading and speed squared errors, squared actuations, squared actuations variations. In fact, besides minimizing the path and speed error,
 it is important not to choose too sharp actuations, which could be unefficient, unconfortable or even cause of instability.
 The core idea to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
-the curvature of the path, from which calculate the speed. For the curvature calculation I need:\n
-- the forseen x distance at each step\n
-- the first and the second derivative of the polynomial.\n
-The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file).\n
+the curvature of the path, from which calculate the speed. For the curvature calculation I need: \n
+- the forseen x distance at each step \n
+- the first and the second derivative of the polynomial. \n
+The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file). \n
 The constant max lateral acceleration assumption is simplistic because: \n
 a) maximum lateral acceleration is deeply affected by the longitudinal one, due to tire properties\n
 b) aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.\n
-This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.\n
+This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter. \n
 
 
 ## Model Tuning
@@ -51,9 +51,9 @@ also because I am performing a race driving and extreme actuations, especially i
 ### Speed Reference
 I tuned the maximum acceleration value so to reach the best compromise between the speed and the stability. There were solutions that achieved a maximum speed of 101 mph, but not quite stable. My current
 solution is fast and stable, achieving almost 97 mph max speed in the second lap. Some slight refinement is possible, but it wouldn't add much to the overall result. The tuning value of 150 actually includes
-the square of the conversion factor m/s to mph: the reference max lateral acceleration is about 3g, which could be somehow justifiable by the wind aero effect.\n
+the square of the conversion factor m/s to mph: the reference max lateral acceleration is about 3g, which could be somehow justifiable by the wind aero effect. \n
 You will also notice a non trivial bias to the curvature (8e-3), using not only to avoid division by zero, but also to reduce the amount of the speed error in quasi-straight line condition (you would have enormous reference speed!), 
-which would cause instability in the path control.\n
+which would cause instability in the path control. \n
 
 ## Model Preprocessing
 
