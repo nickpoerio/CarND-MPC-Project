@@ -19,11 +19,11 @@ it is important not to choose too sharp actuations, which could be unefficient, 
 The core idea to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
 the curvature of the path, from which calculate the speed. For the curvature calculation I need:  
 - the forseen x distance at each step  
-- the first and the second derivative of the polynomial.  
-The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file).  
+- the first and the second derivative of the polynomial.    
+The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file).    
 The constant max lateral acceleration assumption is simplistic because:  
-a) maximum lateral acceleration is deeply affected by the longitudinal one, due to tire properties  
-b) aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.  
+- maximum lateral acceleration is deeply affected by the longitudinal one, due to tire properties  
+- aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.    
 This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.  
 
 
