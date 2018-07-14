@@ -19,11 +19,13 @@ it is important not to choose too sharp actuations, which could be unefficient, 
 The core idea to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
 the curvature of the path, from which calculate the speed. For the curvature calculation I need:  
 - the forseen x distance at each step  
-- the first and the second derivative of the polynomial.    
+- the first and the second derivative of the polynomial.
+  
 The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file).    
 The constant max lateral acceleration assumption is simplistic because:  
 - maximum lateral acceleration is deeply affected by the longitudinal one, due to tire properties  
-- aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.    
+- aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.
+  
 This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.  
 
 
@@ -62,7 +64,7 @@ I take the waypoints and project to the car coordinate frame (see lines 105-115 
 a reference speed variation. If instead of a polynomial, a spline were needed (longer predictions), a 5th order would have been necessary, in order to assure continuity in the curvature variation which is the reference for vehicle yaw acceleration.
 
 ### State, Latency and Actuators
-The initial state (0 displacements and initial errors) has been projected 0.1 s ahead using single track model kinematics equations (lines 126-146 in main), so that the latency of the system minimally affects the controller performance.
+The initial state (0 displacements and measured initial errors) has been projected 0.1 s ahead using single track model kinematics equations (lines 126-146 in main), so that the latency of the system minimally affects the controller performance.
 Actuator values are calculated by the optimizer and passed to the vehicle block, with the proper sign.
 
 
