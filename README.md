@@ -4,7 +4,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 ## Model Description
 ### State, actuators, equations
-\tA model predictive control has been implemented using the following 6 states: position coordinates (x,y), speed, heading, cross track error and heading error.
+A model predictive control has been implemented using the following 6 states: position coordinates (x,y), speed, heading, cross track error and heading error.
 The actuations are the steering angle and the gas/brake pedal, which for this application, for simplicity, is straightly related to the acceleration/deceleration.
 The update equations follow the single track model kinematics, taking particular care of the steering wheel sign inversion, as suggested in the project instructions.
 
@@ -17,9 +17,12 @@ approach, which still makes the job, that I will explain with the cost function 
 I used the following costs to build the cost function: cross track, heading and speed squared errors, squared actuations, squared actuations variations. In fact, besides minimizing the path and speed error,
 it is important not to choose too sharp actuations, which could be unefficient, unconfortable or even cause of instability.
 The core idea to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
-the curvature of the path, from which calculate the speed. The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file). 
-This assumption is simplistic because: \n
-a) maximum lateral acceleration can be deeply affected by the longitudinal one, due to tire properties\n
+the curvature of the path, from which calculate the speed. For the curvature calculation I need:\n
+- the forseen x distance at each step\n
+- the first and the second derivative of the polynomial.\n
+The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file).\n
+The constant max lateral acceleration assumption is simplistic because: \n
+a) maximum lateral acceleration is deeply affected by the longitudinal one, due to tire properties\n
 b) aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.\n
 This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.\n
 
@@ -28,16 +31,16 @@ This being said, I accepted these drawbacks and tried to get the best from what 
 The tuning process has certainly not been straightforward, rather quite iterative. At the end of the process, the vehicle seems to drive slightly faster than in the video shown in the project
 introduction, so that I can consider my peronal goal achieved. The detailed tuning steps follow.
 
- ### Horizon
-I first decided to reduce the MPC horizon, 2s made the model a little bit harder to tune as they often included 2 curves.
+### Horizon
+I first decided to reduce the MPC horizon, 2s made the model a little bit harder to tune as they often included 2 curves (trajectory not easily described by a single plynomial).
 Initially it was set to 1.5s, which was not that bad, and I used this value to tune the cost function. Exploring things further, I then realized that 1s could be the best compromise between prediction
 capabilities and computational cost and stability of the control (a two short horizon causes instability).
 
- ### Number of points
+### Number of points
 The number of prediction steps was chosen to guarantee an accurate description of control action and vehicle response, assuring a good computational cost. A frequency of 10 Hz enclosures very
 well my dynamic constrains without weighing to much on the computation: a number of 10 points has been chosen with the 1s horizon.
 
- ### Cost Function Weights
+### Cost Function Weights
 My first tuning steps were performed at constant speed. I started with 30 mph and then went beyond up to 50 mph. This speed was enough to tune the path cost function and in particular the balance
 between cross track error and heading error. I priviledged the heading error, so to be more stable at higher speed and properly "cut" the curves: this is done on purpose in order to better approximate
 what a race driver would do and so to go faster. Hence, you will notice that the speed reference estimation is conservative from this point of view, but at the end it balances the neglection of the 
@@ -45,7 +48,7 @@ interaction with the longitudinal acceleration.
 I kept the speed weight 1, while adjusted the actuation weights after the proper speed reference generation. I privileged the minimization of actuation variation rather than of the actuation itself,
 also because I am performing a race driving and extreme actuations, especially in pedals, are ok.
 
- ### Speed Reference
+### Speed Reference
 I tuned the maximum acceleration value so to reach the best compromise between the speed and the stability. There were solutions that achieved a maximum speed of 101 mph, but not quite stable. My current
 solution is fast and stable, achieving almost 97 mph max speed in the second lap. Some slight refinement is possible, but it wouldn't add much to the overall result. The tuning value of 150 actually includes
 the square of the conversion factor m/s to mph: the reference max lateral acceleration is about 3g, which could be somehow justifiable by the wind aero effect.\n
@@ -55,10 +58,13 @@ which would cause instability in the path control.\n
 ## Model Preprocessing
 
 ### Waypoints
+I take the waypoints and project to the car coordinate frame (see lines 105-115 in main). Then I used a 3rd order polynomial to interpolate the points. This is the minimum order to guarantee a curvature variation, which also determines
+a reference speed variation. If instead of a polynomial, a spline were needed (longer predictions), a 5th order would have been necessary, in order to assure continuity in the curvature variation which is the reference for vehicle yaw acceleration.
 
-### State and actuators
+### State, Latency and Actuators
+The initial state (0 displacements and initial errors) has been projected 0.1 s ahead using single track model kinematics equations (lines 126-146 in main), so that the latency of the system minimally affects the controller performance.
+Actuator values are calculated by the optimizer and passed to the vehicle block, with the proper sign.
 
-### Latency
 
 ---
 
