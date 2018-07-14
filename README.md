@@ -34,8 +34,8 @@ The tuning process has certainly not been straightforward, rather quite iterativ
 introduction, so that I can consider my peronal goal achieved. The detailed tuning steps follow.
 
 ### Horizon
-I first decided to reduce the MPC horizon, 2s made the model a little bit harder to tune as they often included 2 curves (trajectory not easily described by a single plynomial).
-Initially it was set to 1.5s, which was not that bad, and I used this value to tune the cost function. Exploring things further, I then realized that 1s could be the best compromise between prediction
+I first decided to reduce the MPC horizon, 2s made the model a little bit harder to tune as they often included 2 curves (trajectory not easily described by a single polynomial).
+Initially it was set to 1.5s, which was not that bad, and used this value to tune the cost function. Exploring things further, I then realized that 1s could be the best compromise between prediction
 capabilities and computational cost and stability of the control (a two short horizon causes instability).
 
 ### Number of points
@@ -47,24 +47,24 @@ My first tuning steps were performed at constant speed. I started with 30 mph an
 between cross track error and heading error. I priviledged the heading error, so to be more stable at higher speed and properly "cut" the curves: this is done on purpose in order to better approximate
 what a race driver would do and so to go faster. Hence, you will notice that the speed reference estimation is conservative from this point of view, but at the end it balances the neglection of the 
 interaction with the longitudinal acceleration.
-I kept the speed weight 1, while adjusted the actuation weights after the proper speed reference generation. I privileged the minimization of actuation variation rather than of the actuation itself,
+I kept the speed weight unchanged, while adjusted the actuation weights after the proper speed reference generation. I privileged the minimization of the actuation variation rather than of the actuation itself,
 also because I am performing a race driving and extreme actuations, especially in pedals, are ok.
 
 ### Speed Reference
 I tuned the maximum acceleration value so to reach the best compromise between the speed and the stability. There were solutions that achieved a maximum speed of 101 mph, but not quite stable. My current
 solution is fast and stable, achieving almost 97 mph max speed in the second lap. Some slight refinement is possible, but it wouldn't add much to the overall result. The tuning value of 150 actually includes
 the square of the conversion factor m/s to mph: the reference max lateral acceleration is about 3g, which could be somehow justifiable by the wind aero effect.  
-You will also notice a non trivial bias to the curvature (8e-3), using not only to avoid division by zero, but also to reduce the amount of the speed error in quasi-straight line condition (you would have enormous reference speed!), 
+You will also notice a non trivial bias to the curvature (8e-3), used not only to avoid division by zero, but also to reduce the amount of the speed error in quasi-straight line condition (you would have enormous reference speed!), 
 which would cause instability in the path control.  
 
 ## Model Preprocessing
 
 ### Waypoints
-I take the waypoints and project to the car coordinate frame (see lines 105-115 in main). Then I used a 3rd order polynomial to interpolate the points. This is the minimum order to guarantee a curvature variation, which also determines
+I took the waypoints and project to the car coordinate frame (see lines 105-115 in main.cpp). Then I used a 3rd order polynomial to interpolate the points. This is the minimum order to guarantee a curvature variation, which also determines
 a reference speed variation. If instead of a polynomial, a spline were needed (longer predictions), a 5th order would have been necessary, in order to assure continuity in the curvature variation which is the reference for vehicle yaw acceleration.
 
 ### State, Latency and Actuators
-The initial state (0 displacements and measured initial errors) has been projected 0.1 s ahead using single track model kinematics equations (lines 126-146 in main), so that the latency of the system minimally affects the controller performance.
+The initial state (0 displacements and measured initial errors) has been projected 0.1 s ahead using single track model kinematics equations (lines 126-146 in main.cpp), so that the latency of the system minimally affects the controller performance.
 Actuator values are calculated by the optimizer and passed to the vehicle block, with the proper sign.
 
 
