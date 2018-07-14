@@ -1,6 +1,36 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
+## Model Description
+
+# State, actuators, equations
+A model predictive control has been implemented using the following 6 states: position coordinates (x,y), speed, heading, cross track error and heading error.
+The actuations are the steering angle and the gas/brake pedal, which for this application, for simplicity, is straightly related to the acceleration/deceleration.
+The update equations follow the single track model kinematics, taking particular care of the steering wheel sign inversion, as suggested in the project instructions.
+
+# Goal
+I set myself a little bit harder goal: not only follow the path, but trying to complete the lap as fast as possible. For this purpose, the ideal condition would be to have
+some additional info about the vehicle, like mass, yaw inertia and tyre characteristics, in order to use a single track dynamic model. As it is not the case, I tryed to apply a simpler
+approach, which still makes the job, that I will explain with the cost function description.
+
+# Cost Function
+I used the following costs to build the cost function: cross track,heading and speed squared errors, squared actuations, squared actuations variations. In fact, besides minimizing the path and speed error,
+it is important not to choose too sharp actuations, which could be unefficient, unconfortable or even cause of instability.
+The core idea to reach my additional goal to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
+the curvature of the path. The detailed equations can be found in the code (lines 56-62 of the MPC.cpp file). 
+This assumption is simplistic because: 
+a) maximum lateral acceleration can be deeply affected by longitudinal one, due to tire properties
+b) aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.
+This being said, I accepted this drawbacks and tried to get the best from this! Further details will be provided in the next chapter.
+
+
+## Model Tuning
+
+The tuning process has certainly not been straightforward.
+
+## Model Preprocessing
+
+
 ---
 
 ## Dependencies
