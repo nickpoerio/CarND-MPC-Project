@@ -60,7 +60,7 @@ which would cause instability in the path control.
 ## Model Preprocessing
 
 ### Waypoints
-I took the waypoints and project to the car coordinate frame (see lines 105-115 in main.cpp). Then I used a 3rd order polynomial to interpolate the points. This is the minimum order to guarantee a curvature variation, which also determines
+I took the waypoints and projected to the car coordinate frame (see lines 105-115 in main.cpp). Then I used a 3rd order polynomial to interpolate the points. This is the minimum order to guarantee a curvature variation, which also determines
 a reference speed variation. If instead of a polynomial, a spline were needed (longer predictions), a 5th order would have been necessary, in order to assure continuity in the curvature variation which is the reference for vehicle yaw acceleration.
 
 ### State, Latency and Actuators
