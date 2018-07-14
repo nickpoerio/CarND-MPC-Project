@@ -1,19 +1,19 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
-
+\n
 ## Model Description
- ### State, actuators, equations
+\t### State, actuators, equations
 A model predictive control has been implemented using the following 6 states: position coordinates (x,y), speed, heading, cross track error and heading error.
 The actuations are the steering angle and the gas/brake pedal, which for this application, for simplicity, is straightly related to the acceleration/deceleration.
 The update equations follow the single track model kinematics, taking particular care of the steering wheel sign inversion, as suggested in the project instructions.
 
- ### Goal
+\t### Goal
 I set myself a little bit harder goal: not only follow the path, but trying to complete the lap as fast as possible. For this purpose, the ideal condition would be to have
 some additional info about the vehicle, like mass, yaw inertia and tyre characteristics, in order to use a single track dynamic model. As it is not the case, I tryed to apply a simpler
 approach, which still makes the job, that I will explain with the cost function description.
 
- ### Cost Function
+\t### Cost Function
 I used the following costs to build the cost function: cross track, heading and speed squared errors, squared actuations, squared actuations variations. In fact, besides minimizing the path and speed error,
 it is important not to choose too sharp actuations, which could be unefficient, unconfortable or even cause of instability.
 The core idea to go fast is to properly define a reference speed. With the informations I have, the simplest way to do that is to set a maximum lateral acceleration and calculate
@@ -21,7 +21,7 @@ the curvature of the path, from which calculate the speed. The detailed equation
 This assumption is simplistic because: \n
 a) maximum lateral acceleration can be deeply affected by the longitudinal one, due to tire properties\n
 b) aero effects caused by the rear wing could increase much the maximum lateral acceleration achievable at high speed.\n
-This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.
+This being said, I accepted these drawbacks and tried to get the best from what I have! Further details will be provided in the next chapter.\n
 
 
 ## Model Tuning
@@ -43,18 +43,22 @@ between cross track error and heading error. I priviledged the heading error, so
 what a race driver would do and so to go faster. Hence, you will notice that the speed reference estimation is conservative from this point of view, but at the end it balances the neglection of the 
 interaction with the longitudinal acceleration.
 I kept the speed weight 1, while adjusted the actuation weights after the proper speed reference generation. I privileged the minimization of actuation variation rather than of the actuation itself,
-also because I am performing a race driving and extreme actuations, expecially in pedals, are ok.
+also because I am performing a race driving and extreme actuations, especially in pedals, are ok.
 
  ### Speed Reference
 I tuned the maximum acceleration value so to reach the best compromise between the speed and the stability. There were solutions that achieved a maximum speed of 101 mph, but not quite stable. My current
 solution is fast and stable, achieving almost 97 mph max speed in the second lap. Some slight refinement is possible, but it wouldn't add much to the overall result. The tuning value of 150 actually includes
 the square of the conversion factor m/s to mph: the reference max lateral acceleration is about 3g, which could be somehow justifiable by the wind aero effect.\n
-You will also notice a non trivial bias to the curvature (8e-3), using not only to avoid division by zero, but also to reduce the amount of the speed error in quasi-straight line condition, which would cause
-instability in the path control.
-
+You will also notice a non trivial bias to the curvature (8e-3), using not only to avoid division by zero, but also to reduce the amount of the speed error in quasi-straight line condition (you would have enormous reference speed!), 
+which would cause instability in the path control.\n
 
 ## Model Preprocessing
 
+### Waypoints
+
+### State and actuators
+
+### Latency
 
 ---
 
